@@ -1,0 +1,5 @@
+handgun
+shotgun
+rifle
+stair
+person
