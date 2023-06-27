@@ -2,16 +2,23 @@ import cv2
 import numpy as np
 import time
 
-# weights_path    = 'yolo_conf/GUN_cnfg_v4tiny-416x416-2306/GUN_cnfg_v4tiny-416x416-2306_final.weights'
-# config_path     = 'yolo_conf/GUN_cnfg_v4tiny-416x416-2306/GUN_cnfg_v4tiny-416x416-2306.cfg'
-# classes_path    = 'yolo_conf/classes-gun.txt'
+# weights_path    = 'GUN_cnfg_v3tiny-416x416-2506_best.weights'
+# config_path     = 'GUN_cnfg_v3tiny-416x416-2506.cfg'
+
+weights_path    = 'GUN_cnfg_v4tiny-416x416-2306_best.weights'
+config_path     = 'GUN_cnfg_v4tiny-416x416-2306.cfg'
+
+# weights_path    = 'GUN_cnfg_v7tiny-416x416-2606_best.weights'
+# config_path     = 'GUN_cnfg_v7tiny-416x416-2606.cfg'
+
+classes_path    = 'yolo_conf/classes-gun.txt'
 testvid_path    = 'media/gun_test1.mp4'
-imgsz = 320
+imgsz = 416
 
 
-weights_path    = 'yolo_conf/yolov4-csp-s-mish.weights'
-config_path     = 'yolo_conf/yolov4-csp-s-mish.cfg'
-classes_path    = 'yolo_conf/coco.txt'
+# weights_path    = 'yolo_conf/yolov4-csp-s-mish.weights'
+# config_path     = 'yolo_conf/yolov4-csp-s-mish.cfg'
+# classes_path    = 'yolo_conf/coco.txt'
 net = cv2.dnn.readNet(weights_path, config_path)
 net.setPreferableBackend(cv2.dnn.DNN_BACKEND_OPENCV)
 net.setPreferableTarget(cv2.dnn.DNN_TARGET_CPU)
