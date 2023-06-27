@@ -350,4 +350,4 @@ MigrationBackup/
 .ionide/
 dataset-te/
 media/
-yolo_conf/weights
+yolo_conf/

@@ -2,28 +2,31 @@ import cv2
 import numpy as np
 import time
 
-weights_path    = 'yolo_conf/GUN_cnfg_v4tiny-416x416-00506_best.weights'
-config_path     = 'yolo_conf/GUN_cnfg_v4tiny-416x416-00506.cfg'
-classes_path    = 'yolo_conf/classes-gun.txt'
+# weights_path    = 'yolo_conf/GUN_cnfg_v4tiny-416x416-2306/GUN_cnfg_v4tiny-416x416-2306_final.weights'
+# config_path     = 'yolo_conf/GUN_cnfg_v4tiny-416x416-2306/GUN_cnfg_v4tiny-416x416-2306.cfg'
+# classes_path    = 'yolo_conf/classes-gun.txt'
+testvid_path    = 'media/gun_test1.mp4'
+imgsz = 320
 
+
+weights_path    = 'yolo_conf/yolov4-csp-s-mish.weights'
+config_path     = 'yolo_conf/yolov4-csp-s-mish.cfg'
+classes_path    = 'yolo_conf/coco.txt'
 net = cv2.dnn.readNet(weights_path, config_path)
-net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
-net.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)
+net.setPreferableBackend(cv2.dnn.DNN_BACKEND_OPENCV)
+net.setPreferableTarget(cv2.dnn.DNN_TARGET_CPU)
 
 classes = []
 with open(classes_path, "r") as f:
     classes = f.read().splitlines()
 
-
 font = cv2.FONT_HERSHEY_DUPLEX
 font2 = cv2.FONT_HERSHEY_COMPLEX
-imgsz = 320
 
 # create a color random by numpy
 colors = np.random.uniform(0, 255, size=(100, 3))
 
-
-cap = cv2.VideoCapture("media/gun_test1.mp4")
+cap = cv2.VideoCapture(0)
 # cap = cv2.VideoCapture(0)
 cap.set(3,640)
 cap.set(4,480)
@@ -49,7 +52,7 @@ while True:
             scores = detection[5:]
             class_id = np.argmax(scores)
             confidence = scores[class_id]
-            if confidence > 0.3:
+            if confidence > 0.4:
                 center_x = int(detection[0]*width)
                 center_y = int(detection[1]*height)
                 w = int(detection[2]*width)
