@@ -2,18 +2,23 @@ import cv2
 import numpy as np
 import time
 
-# weights_path    = 'GUN_cnfg_v3tiny-416x416-2506_best.weights'
-# config_path     = 'GUN_cnfg_v3tiny-416x416-2506.cfg'
+# weights_path    = 'batch1/GUN_cnfg_v3tiny-416x416-2506_best.weights'
+# config_path     = 'batch1/GUN_cnfg_v3tiny-416x416-2506.cfg'
 
-# weights_path    = 'GUN_cnfg_v4tiny-416x416-2806_best.weights'
-# config_path     = 'GUN_cnfg_v4tiny-416x416-2806.cfg'
+# weights_path    = 'batch1/GUN_cnfg_v4tiny-416x416-2806_best.weights'
+# config_path     = 'batch1/GUN_cnfg_v4tiny-416x416-2806.cfg'
 
-# weights_path    = 'GUN_cnfg_v7tiny-416x416-2606_best.weights'
-# config_path     = 'GUN_cnfg_v7tiny-416x416-2606.cfg'
+# weights_path    = 'batch1/GUN_cnfg_v7tiny-416x416-2606_best.weights'
+# config_path     = 'batch1/GUN_cnfg_v7tiny-416x416-2606.cfg'
 
+# weights_path    = 'batch2/GUN_cnfg_yolov3-tiny-416x416-2806_best.weights'
+# config_path     = 'batch2/GUN_cnfg_yolov3-tiny-416x416-2806.cfg'
 
-weights_path    = 'GUN_cnfg_yolov4-tiny-416x416-2806_best.weights'
-config_path     = 'GUN_cnfg_yolov4-tiny-416x416-2806.cfg'
+weights_path    = 'batch2/GUN_cnfg_yolov4-tiny-416x416-2806_best.weights'
+config_path     = 'batch2/GUN_cnfg_yolov4-tiny-416x416-2806.cfg'
+
+# weights_path    = 'batch2/GUN_cnfg_yolov7-tiny-416x416-2906_best.weights'
+# config_path     = 'batch2/GUN_cnfg_yolov7-tiny-416x416-2906.cfg'
 
 classes_path    = 'yolo_conf/classes-gun.txt'
 testvid_path    = 'media/gun_test1.mp4'
