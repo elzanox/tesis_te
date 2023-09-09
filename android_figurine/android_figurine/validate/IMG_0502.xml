@@ -1,0 +1,37 @@
+<annotation>
+	<folder>android</folder>
+	<filename>IMG_0502.jpg</filename>
+	<path>/android/IMG_0502.jpg</path>
+	<source>
+		<database>Unspecified</database>
+	</source>
+	<size>
+		<width>4032</width>
+		<height>3024</height>
+		<depth>3</depth>
+	</size>
+	<object>
+		<name>android</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>448</xmin>
+			<ymin>622</ymin>
+			<xmax>1433</xmax>
+			<ymax>1671</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>pig_android</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>1791</xmin>
+			<ymin>681</ymin>
+			<xmax>2844</xmax>
+			<ymax>2245</ymax>
+		</bndbox>
+	</object>
+</annotation>
