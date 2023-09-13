@@ -1,0 +1,26 @@
+<annotation>
+	<folder>train</folder>
+	<filename>IMG_0515.jpg</filename>
+	<path>/Users/thuytran/Downloads/Photos-002/train/IMG_0515.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>800</width>
+		<height>600</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>android</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>318</xmin>
+			<ymin>122</ymin>
+			<xmax>534</xmax>
+			<ymax>431</ymax>
+		</bndbox>
+	</object>
+</annotation>

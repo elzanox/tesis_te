@@ -1,0 +1,26 @@
+<annotation>
+	<folder>train</folder>
+	<filename>IMG_0531.jpg</filename>
+	<path>/Users/thuytran/Downloads/Photos-002/train/IMG_0531.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>800</width>
+		<height>600</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>pig_android</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>199</xmin>
+			<ymin>99</ymin>
+			<xmax>480</xmax>
+			<ymax>410</ymax>
+		</bndbox>
+	</object>
+</annotation>
