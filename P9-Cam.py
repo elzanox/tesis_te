@@ -1,13 +1,12 @@
 # import json
 import cv2
 import numpy as np
-from scipy.spatial import distance
+
 import time
 import requests
 from flask import jsonify
 from collections import Counter
 from datetime import datetime
-import os
 from waitress import serve
 from flask import Flask, render_template, Response, stream_with_context, request, json, jsonify
 
