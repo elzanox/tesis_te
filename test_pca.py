@@ -108,7 +108,7 @@ def berhenti():
     pca.channels[5].duty_cycle = off
     
     pca.channels[6].duty_cycle = off
-    pca.channels[7].duty_cycle git= off
+    pca.channels[7].duty_cycle = off
     
     pca.channels[8].duty_cycle = off
     pca.channels[9].duty_cycle = off
