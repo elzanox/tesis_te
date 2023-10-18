@@ -1,9 +1,8 @@
 # import json
 import cv2
-import numpy as np
-
-import time
-import requests
+# import numpy as np
+# import time
+# import requests
 from flask import jsonify
 from collections import Counter
 from datetime import datetime
