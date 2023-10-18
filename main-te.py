@@ -30,8 +30,12 @@ imgsz = 416
 # config_path     = 'yolo_conf/yolov4-csp-s-mish.cfg'
 # classes_path    = 'yolo_conf/coco.txt'
 net = cv2.dnn.readNet(weights_path, config_path)
-net.setPreferableBackend(cv2.dnn.DNN_BACKEND_OPENCV)
-net.setPreferableTarget(cv2.dnn.DNN_TARGET_CPU)
+
+# net.setPreferableBackend(cv2.dnn.DNN_BACKEND_OPENCV)
+# net.setPreferableTarget(cv2.dnn.DNN_TARGET_CPU)
+
+net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
+net.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)
 
 classes = []
 with open(classes_path, "r") as f:
@@ -43,7 +47,7 @@ font2 = cv2.FONT_HERSHEY_COMPLEX
 # create a color random by numpy
 colors = np.random.uniform(0, 255, size=(100, 3))
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture('media/output_video.mp4')
 # cap = cv2.VideoCapture(0)
 cap.set(3,640)
 cap.set(4,480)
