@@ -51,7 +51,14 @@ cap = cv2.VideoCapture('media/output_video.mp4')
 # cap = cv2.VideoCapture(0)
 cap.set(3,640)
 cap.set(4,480)
-
+# Inisialisasi objek VideoWriter untuk menyimpan video
+rec_fps = 30
+rec_format = ".mp4"
+rec_fourcc = "mp4v"
+rec_frame_width = int(cap.get(3))
+rec_frame_height = int(cap.get(4))
+fourcc = cv2.VideoWriter_fourcc(*'mp4v')  # Format kompresi MP4
+out = cv2.VideoWriter('yolov3tiny_output.mp4', cv2.VideoWriter_fourcc(*rec_fourcc), rec_fps, (rec_frame_width, rec_frame_height))  # Ganti nama file, frame rate, dan resolusi sesuai kebutuhan
 
 port = 5000
 
@@ -124,6 +131,8 @@ def video_stream():
             cv2.rectangle(img, (10, 5), (190,35), color=(0,255,0), thickness = -1)
             cv2.putText(img, fps_text, (10, 30), font, 1, (255, 255, 255), 2)
             cv2.imshow('Image', img)
+            # Simpan frame ke dalam file MP4
+            out.write(img)
             key = cv2.waitKey(1)
             if key==27:
                 # break
