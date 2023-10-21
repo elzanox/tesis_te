@@ -31,11 +31,11 @@ imgsz = 416
 # classes_path    = 'yolo_conf/coco.txt'
 net = cv2.dnn.readNet(weights_path, config_path)
 
-# net.setPreferableBackend(cv2.dnn.DNN_BACKEND_OPENCV)
-# net.setPreferableTarget(cv2.dnn.DNN_TARGET_CPU)
+net.setPreferableBackend(cv2.dnn.DNN_BACKEND_OPENCV)
+net.setPreferableTarget(cv2.dnn.DNN_TARGET_CPU)
 
-net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
-net.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)
+# net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
+# net.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)
 
 classes = []
 with open(classes_path, "r") as f:
@@ -47,8 +47,8 @@ font2 = cv2.FONT_HERSHEY_COMPLEX
 # create a color random by numpy
 colors = np.random.uniform(0, 255, size=(100, 3))
 
-cap = cv2.VideoCapture('media/output_video.mp4')
-# cap = cv2.VideoCapture(0)
+# cap = cv2.VideoCapture('media/output_video.mp4')
+cap = cv2.VideoCapture(0)
 cap.set(3,640)
 cap.set(4,480)
 # Inisialisasi objek VideoWriter untuk menyimpan video
@@ -132,7 +132,7 @@ def video_stream():
             cv2.putText(img, fps_text, (10, 30), font, 1, (255, 255, 255), 2)
             cv2.imshow('Image', img)
             # Simpan frame ke dalam file MP4
-            out.write(img)
+            # out.write(img)
             key = cv2.waitKey(1)
             if key==27:
                 # break
