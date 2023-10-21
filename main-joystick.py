@@ -5,13 +5,23 @@
 # resistor in series to the pin to visualize duty cycle changes and its impact on brightness.
 
 import paho.mqtt.client as mqtt
-from board import SCL, SDA
-import busio
+dev = 1
+if dev != 1:    
+    from board import SCL, SDA
+    import busio
 
-from adafruit_pca9685 import PCA9685 # Import the PCA9685 module.
+    from adafruit_pca9685 import PCA9685 # Import the PCA9685 module.
+    # Create the I2C bus interface.
+    i2c_bus = busio.I2C(SCL, SDA)
+
+    # Create a simple PCA9685 class instance.
+    pca = PCA9685(i2c_bus)
+    # Set the PWM frequency to 60hz.
+    pca.frequency = 60
+    print(dev)
 
 # MQTT broker configuration
-broker_address = "localhost"
+broker_address = "103.150.93.184"
 port = 1883
 topicc = "control"
 
@@ -19,14 +29,9 @@ topicc = "control"
 client = mqtt.Client()
 client.connect(broker_address, port)
 
-# Create the I2C bus interface.
-i2c_bus = busio.I2C(SCL, SDA)
 
-# Create a simple PCA9685 class instance.
-pca = PCA9685(i2c_bus)
 
-# Set the PWM frequency to 60hz.
-pca.frequency = 60
+
 onn = 65535 
 off = 0
 
@@ -136,23 +141,34 @@ def on_connect(client, userdata, flags, rc):
     print("Connected with result code " + str(rc))
     # Subscribe to MQTT topics here
     client.subscribe(topicc)
-
+    
+# Inisialisasi variabel payload_sebelumnya
+payload_sebelumnya = None
 # Callback for when a message is received from the MQTT broker
 def on_message(client, userdata, message):
+    global payload_sebelumnya  # Menggunakan payload_sebelumnya sebagai variabel global
     payload = message.payload.decode("utf-8")
     print("Received message '" + payload + "' on topic '" + message.topic + "'")
 
-    # Based on the received MQTT topic, call the corresponding function
-    if payload == "UP":
-        maju()
-    elif payload == "DOWN":
-        mundur()
-    elif payload == "LEFT":
-        kiri()
-    elif payload == "RIGHT":
-        kanan()
-    elif payload == "null":
-        berhenti()
+    # Memeriksa apakah payload sama dengan payload_sebelumnya
+    if payload != payload_sebelumnya:
+        # Payload berbeda, maka lakukan tindakan
+        if payload == "UP":
+            maju()
+        elif payload == "DOWN":
+            mundur()
+        elif payload == "LEFT":
+            kiri()
+        elif payload == "RIGHT":
+            kanan()
+        elif payload == "null":
+            berhenti()
+    else:
+        # Payload sama dengan yang sebelumnya, tidak lakukan apa-apa
+        print("Payload sama dengan sebelumnya, tidak ada tindakan yang diambil.")
+
+    # Setel payload_sebelumnya ke payload saat ini
+    payload_sebelumnya = payload
 
 # Set the callback functions
 client.on_connect = on_connect

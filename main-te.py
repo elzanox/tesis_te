@@ -12,7 +12,7 @@ from flask import Flask, render_template, Response, stream_with_context, request
 # weights_path    = 'batch1/GUN_cnfg_v7tiny-416x416-2606_best.weights'
 # config_path     = 'batch1/GUN_cnfg_v7tiny-416x416-2606.cfg'
 
-weights_path    = 'batch2/GUN_cnfg_yoloq3-tiny-416x416-2806_best.weights'
+weights_path    = 'batch2/GUN_cnfg_yolov3-tiny-416x416-2806_best.weights'
 config_path     = 'batch2/GUN_cnfg_yolov3-tiny-416x416-2806.cfg'
 
 # weights_path    = 'batch2/GUN_cnfg_yolov4-tiny-416x416-2806_best.weights'
@@ -31,11 +31,11 @@ imgsz = 416
 # classes_path    = 'yolo_conf/coco.txt'
 net = cv2.dnn.readNet(weights_path, config_path)
 
-net.setPreferableBackend(cv2.dnn.DNN_BACKEND_OPENCV)
-net.setPreferableTarget(cv2.dnn.DNN_TARGET_CPU)
+# net.setPreferableBackend(cv2.dnn.DNN_BACKEND_OPENCV)
+# net.setPreferableTarget(cv2.dnn.DNN_TARGET_CPU)
 
-# net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
-# net.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)
+net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
+net.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)
 
 classes = []
 with open(classes_path, "r") as f:
