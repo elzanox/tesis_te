@@ -12,8 +12,8 @@ from flask import Flask, render_template, Response, stream_with_context, request
 # weights_path    = 'batch1/GUN_cnfg_v7tiny-416x416-2606_best.weights'
 # config_path     = 'batch1/GUN_cnfg_v7tiny-416x416-2606.cfg'
 
-weights_path    = 'batch2/GUN_cnfg_yolov3-tiny-416x416-2806_best.weights'
-config_path     = 'batch2/GUN_cnfg_yolov3-tiny-416x416-2806.cfg'
+# weights_path    = 'batch2/GUN_cnfg_yolov3-tiny-416x416-2806_best.weights'
+# config_path     = 'batch2/GUN_cnfg_yolov3-tiny-416x416-2806.cfg'
 
 # weights_path    = 'batch2/GUN_cnfg_yolov4-tiny-416x416-2806_best.weights'
 # config_path     = 'batch2/GUN_cnfg_yolov4-tiny-416x416-2806.cfg'
@@ -21,8 +21,18 @@ config_path     = 'batch2/GUN_cnfg_yolov3-tiny-416x416-2806.cfg'
 # weights_path    = 'batch2/GUN_cnfg_yolov7-tiny-416x416-2906_best.weights'
 # config_path     = 'batch2/GUN_cnfg_yolov7-tiny-416x416-2906.cfg'
 
+# weights_path    = 'batch3/GUN_cnfg_yolov3-tiny-416x416-0311_best.weights'
+# config_path     = 'batch3/GUN_cnfg_yolov3-tiny-416x416-0311.cfg'
+
+weights_path    = 'batch3/GUN_cnfg_yolov4-tiny-416x416-0311_best.weights'
+config_path     = 'batch3/GUN_cnfg_yolov4-tiny-416x416-0311.cfg'
+
+# weights_path    = 'batch3/GUN_cnfg_yolov7-tiny-416x416-0311_best.weights'
+# config_path     = 'batch3/GUN_cnfg_yolov7-tiny-416x416-0311.cfg'
+
 classes_path    = 'yolo_conf/classes-gun.txt'
-testvid_path    = 'media/gun_test1.mp4'
+testvid_path    = 'vmm2_test1.mp4'
+output_name     = 'vmm2_test1_result.mp4'
 imgsz = 416
 
 
@@ -49,6 +59,7 @@ colors = np.random.uniform(0, 255, size=(100, 3))
 
 # cap = cv2.VideoCapture('media/output_video.mp4')
 cap = cv2.VideoCapture(0)
+# cap = cv2.VideoCapture(testvid_path)
 cap.set(3,640)
 cap.set(4,480)
 # Inisialisasi objek VideoWriter untuk menyimpan video
@@ -58,7 +69,7 @@ rec_fourcc = "mp4v"
 rec_frame_width = int(cap.get(3))
 rec_frame_height = int(cap.get(4))
 fourcc = cv2.VideoWriter_fourcc(*'mp4v')  # Format kompresi MP4
-out = cv2.VideoWriter('yolov3tiny_output.mp4', cv2.VideoWriter_fourcc(*rec_fourcc), rec_fps, (rec_frame_width, rec_frame_height))  # Ganti nama file, frame rate, dan resolusi sesuai kebutuhan
+out = cv2.VideoWriter(output_name, cv2.VideoWriter_fourcc(*rec_fourcc), rec_fps, (rec_frame_width, rec_frame_height))  # Ganti nama file, frame rate, dan resolusi sesuai kebutuhan
 
 port = 5000
 
@@ -91,7 +102,7 @@ def video_stream():
                     scores = detection[5:]
                     class_id = np.argmax(scores)
                     confidence = scores[class_id]
-                    if confidence > 0.3:
+                    if confidence > 0.4:
                         center_x = int(detection[0]*width)
                         center_y = int(detection[1]*height)
                         w = int(detection[2]*width)
