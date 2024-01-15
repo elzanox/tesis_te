@@ -3,8 +3,10 @@ import numpy as np
 import time
 from waitress import serve
 from flask import Flask, render_template, Response, stream_with_context, request, json, jsonify
-
+import os
+import pygame
 import paho.mqtt.client as mqtt
+from threading import Timer
 # weights_path    = 'batch1/GUN_cnfg_v3tiny-416x416-2506_best.weights'
 # config_path     = 'batch1/GUN_cnfg_v3tiny-416x416-2506.cfg'
 
@@ -67,7 +69,31 @@ mqtt_client.connect(mqtt_broker_address, mqtt_port, 60)
 # Start the MQTT loop in a separate thread
 mqtt_client.loop_start()
 
+# Initialize pygame mixer
+pygame.mixer.init()
+# Flag to track whether MP3 is currently playing
+mp3_playing = False
+# Function to play an MP3 file
+def play_mp3_for_duration(file_path,duration):
+    global mp3_playing
+    
+    # Check if MP3 is already playing, if yes, ignore the new detection
+    if mp3_playing:
+        return
+    pygame.mixer.music.load(file_path)
+    pygame.mixer.music.play()
 
+    mp3_playing = True
+
+    # Set a timer to stop the music after the specified duration
+    Timer(duration, stop_mp3).start()
+# Function to stop the MP3 playback
+def stop_mp3():
+    global mp3_playing
+    pygame.mixer.music.stop()
+    mp3_playing = False
+# Play a sound when an object is detected
+sound_file_path = 'beep.mp3'  # Update with the path to your MP3 file
 
 # weights_path    = 'yolo_conf/yolov4-csp-s-mish.weights'
 # config_path     = 'yolo_conf/yolov4-csp-s-mish.cfg'
@@ -109,6 +135,7 @@ port = 5000
 # create a variable name of Flask
 app = Flask('__name__')
 def video_stream():
+    global mp3_playing
     _, img = cap.read()
     # Inisialisasi variabel FPS
     fps_start_time = time.time()
@@ -129,7 +156,8 @@ def video_stream():
             boxes = []
             confidences = []
             class_ids = []
-            
+            objects_detected = False  # Flag to track whether any object is detected
+
             for output in layerOutputs:
                 for detection in output:
                     scores = detection[5:]
@@ -157,16 +185,22 @@ def video_stream():
                     color = colors[i]
                     daftar.append(label)
                     data = str(daftar)
-                    mqtt_payload = {
+                    if os.path.exists(sound_file_path) and not mp3_playing:
+                        play_mp3_for_duration(sound_file_path, 2)
+
+                        # Set the flag to indicate that an object is detected
+                        objects_detected = True
+
+                        # Publish to MQTT when an object is detected
+                        mqtt_payload = {
                             'label': label,
                             'confidence': confidence_print,
                             'center': {
                                 'x': center_x,
                                 'y': center_y
-                            },
-                            'status' : 'terdeteksi'
+                            }
                         }
-                    mqtt_client.publish("tesis_te", json.dumps(mqtt_payload))
+                        mqtt_client.publish("tesis_te", json.dumps(mqtt_payload))
                     center_rect = (center_x,center_y)
                     confidence = str(round(confidences[i],2)*100)
                     
@@ -180,6 +214,9 @@ def video_stream():
                     cv2.putText(img,confidence_print, (x+135,y-10), font2, 1, color = (255,255,255), thickness = 2)
                     cv2.circle(img, center_rect, radius=1, color=(0,0,255), thickness=2)
             # Hitung FPS (Frame per Second)
+            # Stop the sound playback if no objects are detected
+            # if not objects_detected:
+            #     stop_mp3()
             fps_end_time = time.time()
             fps = fps_frame_counter / (fps_end_time - fps_start_time)
             fps_text = f"FPS: {fps:.2f}"
