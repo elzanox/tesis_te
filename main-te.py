@@ -41,7 +41,7 @@ imgsz = 416
 
 
 # Initialize MQTT client
-mqtt_broker_address = "13.229.19.77"  # Change this to your MQTT broker address
+mqtt_broker_address = "dimasalifta.tech"  # Change this to your MQTT broker address
 mqtt_port = 1883
 mqtt_topic = "tesis_te"  # Change this to your desired MQTT topic
 
