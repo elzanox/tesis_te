@@ -3,6 +3,8 @@ import numpy as np
 import time
 from waitress import serve
 from flask import Flask, render_template, Response, stream_with_context, request, json, jsonify
+
+import paho.mqtt.client as mqtt
 # weights_path    = 'batch1/GUN_cnfg_v3tiny-416x416-2506_best.weights'
 # config_path     = 'batch1/GUN_cnfg_v3tiny-416x416-2506.cfg'
 
@@ -34,6 +36,37 @@ classes_path    = 'yolo_conf/classes-gun.txt'
 testvid_path    = 'vmm2_test1.mp4'
 output_name     = 'vmm2_test1_result.mp4'
 imgsz = 416
+
+
+# Initialize MQTT client
+mqtt_broker_address = "13.229.19.77"  # Change this to your MQTT broker address
+mqtt_port = 1883
+mqtt_topic = "tesis_te"  # Change this to your desired MQTT topic
+
+mqtt_client = mqtt.Client()
+
+# Callback when connection to the broker is established
+def on_connect(client, userdata, flags, rc):
+    print("Connected to MQTT broker with result code "+str(rc))
+    # Subscribe to the topic
+    client.subscribe(mqtt_topic)
+
+# Callback when a message is received from the broker
+def on_message(client, userdata, msg):
+    payload = json.loads(msg.payload.decode())
+    # Process the received payload (you can update the logic based on your requirements)
+    # print("Received payload:", payload)
+
+# Set the callback functions
+mqtt_client.on_connect = on_connect
+mqtt_client.on_message = on_message
+
+# Connect to the MQTT broker
+mqtt_client.connect(mqtt_broker_address, mqtt_port, 60)
+
+# Start the MQTT loop in a separate thread
+mqtt_client.loop_start()
+
 
 
 # weights_path    = 'yolo_conf/yolov4-csp-s-mish.weights'
@@ -112,6 +145,7 @@ def video_stream():
                         boxes.append([x, y, w, h])
                         confidences.append((float(confidence)))
                         class_ids.append(class_id)
+                        
             indexes = cv2.dnn.NMSBoxes(boxes, confidences, 0.2, 0.4)
             daftar = []
             if len(indexes)>0:
@@ -123,6 +157,16 @@ def video_stream():
                     color = colors[i]
                     daftar.append(label)
                     data = str(daftar)
+                    mqtt_payload = {
+                            'label': label,
+                            'confidence': confidence_print,
+                            'center': {
+                                'x': center_x,
+                                'y': center_y
+                            },
+                            'status' : 'terdeteksi'
+                        }
+                    mqtt_client.publish("tesis_te", json.dumps(mqtt_payload))
                     center_rect = (center_x,center_y)
                     confidence = str(round(confidences[i],2)*100)
                     
