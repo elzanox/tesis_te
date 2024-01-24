@@ -28,14 +28,14 @@ from threading import Timer
 # weights_path    = 'batch3/GUN_cnfg_yolov3-tiny-416x416-0311_best.weights'
 # config_path     = 'batch3/GUN_cnfg_yolov3-tiny-416x416-0311.cfg'
 
-weights_path    = 'batch3/GUN_cnfg_yolov4-tiny-416x416-0311_best.weights'
-config_path     = 'batch3/GUN_cnfg_yolov4-tiny-416x416-0311.cfg'
+weights_path    = 'batch_sidang/GUN_cfg_v4tiny-416x416-2412_best.weights'
+config_path     = 'batch_sidang/GUN_cfg_v4tiny-416x416-2412.cfg'
 
 # weights_path    = 'batch3/GUN_cnfg_yolov7-tiny-416x416-0311_best.weights'
 # config_path     = 'batch3/GUN_cnfg_yolov7-tiny-416x416-0311.cfg'
 
 classes_path    = 'yolo_conf/classes-gun.txt'
-testvid_path    = 'vmm2_test1.mp4'
+testvid_path    = 'test/vmm2_test1.mp4'
 output_name     = 'vmm2_test1_result.mp4'
 imgsz = 416
 
@@ -117,8 +117,8 @@ font2 = cv2.FONT_HERSHEY_COMPLEX
 colors = np.random.uniform(0, 255, size=(100, 3))
 
 # cap = cv2.VideoCapture('media/output_video.mp4')
-cap = cv2.VideoCapture(0)
-# cap = cv2.VideoCapture(testvid_path)
+# cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(testvid_path)
 cap.set(3,640)
 cap.set(4,480)
 # Inisialisasi objek VideoWriter untuk menyimpan video
@@ -201,6 +201,7 @@ def video_stream():
                             }
                         }
                         mqtt_client.publish("tesis_te", json.dumps(mqtt_payload))
+                        mqtt_client.publish("tesis_te_status", "true")
                     center_rect = (center_x,center_y)
                     confidence = str(round(confidences[i],2)*100)
                     
@@ -213,6 +214,9 @@ def video_stream():
                     cv2.putText(img,label, (x,y-10), font, 1, color = (255,255,255), thickness = 2)
                     cv2.putText(img,confidence_print, (x+135,y-10), font2, 1, color = (255,255,255), thickness = 2)
                     cv2.circle(img, center_rect, radius=1, color=(0,0,255), thickness=2)
+            else:
+                mqtt_client.publish("tesis_te_status", "false")
+            
             # Hitung FPS (Frame per Second)
             # Stop the sound playback if no objects are detected
             # if not objects_detected:
